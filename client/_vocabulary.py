@@ -39,6 +39,9 @@ command_table = aenea.configuration.make_grammar_commands(
     'vocabulary',
     dict(zip(command_table, command_table))
     )
+# command_table seems to need to be arranged as {executed: spoken},
+# but the above mapping has that reversed
+command_table = dict([reversed(i) for i in command_table.items()])
 
 
 class RefreshRule(dragonfly.CompoundRule):
