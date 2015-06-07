@@ -282,7 +282,7 @@ def get_active_window():
     # still useful for automating through applescript
     window_id, window_title = script.run()
     if window_id:
-        return str(window_id), str(window_title)
+        return window_id.encode('utf-8'), window_title.encode('utf-8')
     else:
         return None, None
 
@@ -292,7 +292,7 @@ def map_window_properties(properties):
     for key in properties:
         short_key = re.match(r".*\('(.*)'\).*", str(key))  # is there a better
         # way to access keys that are instances?
-        p[str(short_key.group(1))] = str(properties[key])
+        p[str(short_key.group(1))] = properties[key]
     return p
 
 
@@ -352,7 +352,7 @@ def get_context():
 
     logging.debug(properties)
 
-    return properties
+    return str(properties)
 
 
 def key_press(
@@ -560,11 +560,10 @@ def multiple_actions(actions):
        'method', 'params', and 'optional' keys. See also JSON-RPC
        multicall.  Guaranteed to execute in specified order.'''
 
-    xdotool = []
     for (method, parameters, optional) in actions:
         commands = list_rpc_commands()
         if method in commands:
-            commands[method](*parameters, _xdotool=xdotool, **optional)
+            commands[method](*parameters, **optional)
         else:
             break
 
