@@ -32,6 +32,7 @@ import logging
 
 import applescript
 from Quartz.CoreGraphics import *
+import pyautogui
 
 _MOUSE_BUTTONS = {
     'left': 1,
@@ -441,10 +442,7 @@ def write_text(text, paste=False):
 
     logging.debug("text = %s paste = %s" % (text, paste))
     if text:
-        # copy the pasted text to the clipboard
-        write_command(text, arguments='', executable='pbcopy')
-        # paste
-        key_press('v', 'super')
+        pyautogui.typewrite(text)
 
 
 def mouseEvent(type, posx, posy, clickCount=1):
